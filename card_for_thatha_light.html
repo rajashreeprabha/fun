@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>for thatha</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+.scene {
+  width: 100%;
+  min-height: 520px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  font-family: var(--font-sans);
+}
+
+.card-wrap { width: 100%; max-width: 520px; }
+
+.cover {
+  background: #FAFBFE;
+  border-radius: 20px;
+  padding: 3.5rem 2rem;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  border: 0.5px solid #C0B8F0;
+  min-height: 340px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.4rem;
+  transition: transform 0.2s ease;
+}
+.cover:hover { transform: translateY(-3px); }
+
+.stars { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+.star { position: absolute; background: #D1D5FF; border-radius: 50%; animation: twinkle 2s infinite alternate; }
+@keyframes twinkle { from { opacity: 0.15; } to { opacity: 0.7; } }
+
+.cover-for { font-family: monospace; font-size: 12px; color: #5B4CC3; letter-spacing: 3px; }
+.cover-name { font-size: 52px; font-weight: 700; color: #1E1E3A; letter-spacing: 2px; position: relative; z-index: 1; }
+
+.cover-btn {
+  margin-top: 0.8rem;
+  padding: 12px 36px;
+  background: transparent;
+  border: 1px solid #C0B8F0;
+  border-radius: 30px;
+  color: #5B4CC3;
+  font-size: 13px;
+  cursor: pointer;
+  font-family: monospace;
+  letter-spacing: 1px;
+  transition: all 0.2s;
+  position: relative;
+  z-index: 2;
+}
+.cover-btn:hover { background: #C0B8F0; color: #1E1E3A; }
+
+/* LOCKED SCREEN */
+.locked {
+  display: none;
+  background: #FAFBFE;
+  border-radius: 20px;
+  border: 0.5px solid #C0B8F0;
+  overflow: hidden;
+  animation: fadeIn 0.6s ease;
+  min-height: 340px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 1.2rem;
+  padding: 3rem 2rem;
+}
+.locked.visible { display: flex; }
+
+.lock-icon {
+  font-size: 40px;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.08); } }
+
+.lock-title {
+  font-family: monospace;
+  font-size: 11px;
+  color: #5B4CC3;
+  letter-spacing: 3px;
+}
+
+.lock-msg {
+  font-size: 15px;
+  color: #4B5563;
+  line-height: 1.8;
+}
+.lock-msg span { color: #5B4CC3; font-weight: 600; }
+
+.countdown {
+  font-family: monospace;
+  font-size: 13px;
+  color: #4338CA;
+  background: #F0F2FF;
+  border: 0.5px solid #C0B8F0;
+  border-radius: 12px;
+  padding: 10px 22px;
+  letter-spacing: 1px;
+}
+
+.lock-back {
+  width: 100%;
+  padding: 10px;
+  background: transparent;
+  border: none;
+  border-top: 0.5px solid #E0E0F5;
+  color: #4338CA;
+  font-family: monospace;
+  font-size: 11px;
+  cursor: pointer;
+  letter-spacing: 2px;
+  transition: color 0.2s;
+  margin-top: 0.5rem;
+}
+.lock-back:hover { color: #5B4CC3; }
+
+/* INSIDE */
+.inside {
+  display: none;
+  background: #FAFBFE;
+  border-radius: 20px;
+  border: 0.5px solid #C0B8F0;
+  overflow: hidden;
+  animation: fadeIn 0.6s ease;
+}
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.inside.visible { display: block; }
+
+.inside-header {
+  background: #F0F2FF;
+  padding: 1.1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 0.5px solid #E0E0F5;
+}
+.dot { width: 10px; height: 10px; border-radius: 50%; }
+.dot.r { background: #FBBFBB; }
+.dot.y { background: #FDE68A; }
+.dot.g { background: #86EFAC; }
+.header-title { font-family: monospace; font-size: 11px; color: #4338CA; margin-left: auto; margin-right: auto; letter-spacing: 2px; }
+
+.inside-body {
+  padding: 2.2rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+}
+
+.label { font-family: monospace; font-size: 11px; color: #5B4CC3; letter-spacing: 2px; }
+
+.message {
+  font-size: 15px;
+  line-height: 1.9;
+  color: #4B5563;
+}
+.message .hl { color: #5B4CC3; font-weight: 500; }
+
+.divider { border: none; border-top: 0.5px dashed #E0E0F5; }
+
+.closing {
+  font-size: 17px;
+  font-weight: 500;
+  color: #1E1E3A;
+  line-height: 1.7;
+  padding: 0.4rem 0;
+}
+
+.sign {
+  text-align: right;
+  font-style: italic;
+  color: #5B4CC3;
+  font-size: 13px;
+  font-family: monospace;
+}
+
+.back-btn {
+  width: 100%;
+  padding: 10px;
+  background: transparent;
+  border: none;
+  border-top: 0.5px solid #E0E0F5;
+  color: #4338CA;
+  font-family: monospace;
+  font-size: 11px;
+  cursor: pointer;
+  letter-spacing: 2px;
+  transition: color 0.2s;
+}
+.back-btn:hover { color: #5B4CC3; }
+</style>
+</head>
+<body>
+
+<div class="scene">
+  <div class="card-wrap">
+
+    <div class="cover" id="cover">
+      <div class="stars" id="stars"></div>
+      <div class="cover-for">// for my</div>
+      <div class="cover-name">Thatha</div>
+      <button class="cover-btn" id="openBtn">click me ♡</button>
+    </div>
+
+    <!-- LOCKED STATE -->
+    <div class="locked" id="locked">
+      <div class="lock-icon">🔒</div>
+      <div class="lock-title">// not yet, thatha</div>
+      <div class="lock-msg">
+        this card is sealed with my emotions<br/>
+        and will open on<br/>
+        <span>April 2nd ✦</span>
+      </div>
+      <div class="countdown" id="countdown">calculating...</div>
+      <button class="lock-back" id="lockBackBtn">↩ back</button>
+    </div>
+
+    <!-- INSIDE -->
+    <div class="inside" id="inside">
+      <div class="inside-header">
+        <div class="dot r"></div>
+        <div class="dot y"></div>
+        <div class="dot g"></div>
+        <div class="header-title">my thatha</div>
+      </div>
+
+      <div class="inside-body">
+        <div class="label">// dey thatha,</div>
+
+        <div class="message">
+          You have been my <span class="hl">emotional support</span> through everything —
+          the kind of person I never knew I needed until you were just always there.<br><br>
+          No matter what I was feeling, you made space for it.
+          You never made me feel like too much.
+          You just <span class="hl">stayed</span>.
+        </div>
+
+        <hr class="divider"/>
+
+        <div class="message">
+          People like you are rare, Sakthi.
+          The kind of rare that you don't find twice.<br><br>
+          <span class="hl">No one will ever fill the place you have.</span>
+          Not even close.
+        </div>
+
+        <hr class="divider"/>
+
+        <div class="closing">
+          And wherever life takes you —<br>
+          I will miss you, <span class="hl">Thatha.</span><br>
+          More than you know. 🫶
+        </div>
+
+        <div class="sign">// always, your kelavi ✦</div>
+      </div>
+
+      <button class="back-btn" id="backBtn">↩ close</button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// Stars
+const starsEl = document.getElementById('stars');
+for (let i = 0; i < 30; i++) {
+  const s = document.createElement('div');
+  s.className = 'star';
+  const size = Math.random() * 2.5 + 1;
+  s.style.cssText = `width:${size}px;height:${size}px;top:${Math.random()*100}%;left:${Math.random()*100}%;opacity:${Math.random()*0.4+0.1};animation-delay:${Math.random()*2}s;animation-duration:${Math.random()*2+1.5}s`;
+  starsEl.appendChild(s);
+}
+
+// Unlock date: April 2, 2026 00:00:00 IST (UTC+5:30)
+// IST = UTC + 5h30m
+function getUnlockDate() {
+  // April 2 2026 00:00:00 IST = April 1 2026 18:30:00 UTC
+  return new Date(Date.UTC(2026, 3, 1, 18, 30, 0));
+}
+
+function isUnlocked() {
+  return new Date() >= getUnlockDate();
+}
+
+function getTimeLeft() {
+  const diff = getUnlockDate() - new Date();
+  if (diff <= 0) return null;
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+  const secs = Math.floor((diff % (1000 * 60)) / 1000);
+  return { days, hours, mins, secs };
+}
+
+function updateCountdown() {
+  const t = getTimeLeft();
+  const el = document.getElementById('countdown');
+  if (!t) {
+    el.textContent = '🔓 unlocked!';
+    return;
+  }
+  if (t.days > 0) {
+    el.textContent = `opens in ${t.days}d ${t.hours}h ${t.mins}m ${t.secs}s`;
+  } else if (t.hours > 0) {
+    el.textContent = `opens in ${t.hours}h ${t.mins}m ${t.secs}s`;
+  } else {
+    el.textContent = `opens in ${t.mins}m ${t.secs}s`;
+  }
+}
+
+setInterval(updateCountdown, 1000);
+updateCountdown();
+
+// Open button
+document.getElementById('openBtn').addEventListener('click', function(e) {
+  e.stopPropagation();
+  if (isUnlocked()) {
+    document.getElementById('cover').style.display = 'none';
+    document.getElementById('inside').classList.add('visible');
+  } else {
+    document.getElementById('cover').style.display = 'none';
+    document.getElementById('locked').classList.add('visible');
+    updateCountdown();
+  }
+});
+
+// Back from locked
+document.getElementById('lockBackBtn').addEventListener('click', function() {
+  document.getElementById('locked').classList.remove('visible');
+  document.getElementById('cover').style.display = 'flex';
+});
+
+// Back from inside
+document.getElementById('backBtn').addEventListener('click', function() {
+  document.getElementById('inside').classList.remove('visible');
+  document.getElementById('cover').style.display = 'flex';
+});
+</script>
+
+</body>
+</html>
