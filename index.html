@@ -5,327 +5,402 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>for thatha</title>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&display=swap');
+
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
-.scene {
-  width: 100%;
-  min-height: 520px;
+:root {
+  --ink: #1a1a2e;
+  --soft: #4a4a6a;
+  --muted: #7c7c9a;
+  --accent: #6b5ce7;
+  --accent-light: #a89cf7;
+  --bg: #f8f7ff;
+  --bg2: #f0eeff;
+  --border: #d4cff5;
+}
+
+body {
+  background: var(--bg);
+  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-family: 'DM Mono', monospace;
   padding: 2rem 1rem;
-  font-family: var(--font-sans);
 }
 
-.card-wrap { width: 100%; max-width: 520px; }
+.wrap { width: 100%; max-width: 540px; }
 
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 100;
+  opacity: 0.5;
+}
+
+/* COVER */
 .cover {
-  background: #FAFBFE;
-  border-radius: 20px;
-  padding: 3.5rem 2rem;
+  background: var(--bg);
+  border-radius: 24px;
+  border: 1px solid var(--border);
+  padding: 4rem 2.5rem 3rem;
   text-align: center;
   cursor: pointer;
   position: relative;
   overflow: hidden;
-  border: 0.5px solid #C0B8F0;
-  min-height: 340px;
+  min-height: 380px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 1.4rem;
-  transition: transform 0.2s ease;
+  gap: 1.2rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 2px 40px rgba(107,92,231,0.06);
 }
-.cover:hover { transform: translateY(-3px); }
+.cover:hover { transform: translateY(-4px); box-shadow: 0 12px 50px rgba(107,92,231,0.12); }
 
-.stars { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
-.star { position: absolute; background: #D1D5FF; border-radius: 50%; animation: twinkle 2s infinite alternate; }
-@keyframes twinkle { from { opacity: 0.15; } to { opacity: 0.7; } }
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(40px);
+  pointer-events: none;
+  opacity: 0.18;
+  animation: drift 8s ease-in-out infinite alternate;
+}
+.blob1 { width: 220px; height: 220px; background: #a89cf7; top: -60px; left: -60px; animation-delay: 0s; }
+.blob2 { width: 180px; height: 180px; background: #f7c6c6; bottom: -50px; right: -40px; animation-delay: 2s; }
+.blob3 { width: 120px; height: 120px; background: #c6d7f7; top: 40%; left: 60%; animation-delay: 4s; }
+@keyframes drift { from { transform: translate(0,0) scale(1); } to { transform: translate(12px,16px) scale(1.08); } }
 
-.cover-for { font-family: monospace; font-size: 12px; color: #5B4CC3; letter-spacing: 3px; }
-.cover-name { font-size: 52px; font-weight: 700; color: #1E1E3A; letter-spacing: 2px; position: relative; z-index: 1; }
+.star { position: absolute; border-radius: 50%; background: var(--accent-light); animation: twinkle 2.5s infinite alternate; }
+@keyframes twinkle { from { opacity: 0.1; } to { opacity: 0.55; } }
+
+.for-label { font-size: 10px; letter-spacing: 4px; color: var(--accent); position: relative; }
+.cover-name {
+  font-family: 'DM Serif Display', serif;
+  font-size: 64px;
+  color: var(--ink);
+  position: relative;
+  line-height: 1;
+  letter-spacing: 1px;
+}
+.cover-sub { font-size: 10px; color: var(--muted); letter-spacing: 3px; position: relative; }
 
 .cover-btn {
-  margin-top: 0.8rem;
-  padding: 12px 36px;
+  margin-top: 1rem;
+  padding: 13px 42px;
   background: transparent;
-  border: 1px solid #C0B8F0;
-  border-radius: 30px;
-  color: #5B4CC3;
-  font-size: 13px;
+  border: 1px solid var(--border);
+  border-radius: 40px;
+  color: var(--accent);
+  font-size: 12px;
   cursor: pointer;
-  font-family: monospace;
-  letter-spacing: 1px;
-  transition: all 0.2s;
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 2px;
+  transition: all 0.25s;
   position: relative;
-  z-index: 2;
 }
-.cover-btn:hover { background: #C0B8F0; color: #1E1E3A; }
+.cover-btn:hover { background: var(--accent); color: white; border-color: var(--accent); transform: scale(1.03); }
 
-/* LOCKED SCREEN */
+/* LOCKED */
 .locked {
   display: none;
-  background: #FAFBFE;
-  border-radius: 20px;
-  border: 0.5px solid #C0B8F0;
+  background: var(--bg);
+  border-radius: 24px;
+  border: 1px solid var(--border);
   overflow: hidden;
-  animation: fadeIn 0.6s ease;
-  min-height: 340px;
+  min-height: 380px;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  gap: 1.2rem;
-  padding: 3rem 2rem;
+  gap: 1.4rem;
+  padding: 3.5rem 2.5rem 4rem;
+  animation: fadeUp 0.5s ease;
+  position: relative;
 }
 .locked.visible { display: flex; }
 
-.lock-icon {
-  font-size: 40px;
-  animation: pulse 2s infinite;
-}
-@keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.08); } }
+.lock-pulse { font-size: 44px; animation: lockpulse 2.2s ease-in-out infinite; }
+@keyframes lockpulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.1) rotate(-3deg); } }
 
-.lock-title {
-  font-family: monospace;
-  font-size: 11px;
-  color: #5B4CC3;
-  letter-spacing: 3px;
-}
+.lock-label { font-size: 10px; letter-spacing: 4px; color: var(--accent); }
 
 .lock-msg {
-  font-size: 15px;
-  color: #4B5563;
-  line-height: 1.8;
+  font-family: 'DM Serif Display', serif;
+  font-size: 22px;
+  color: var(--ink);
+  line-height: 1.6;
 }
-.lock-msg span { color: #5B4CC3; font-weight: 600; }
+.lock-msg em { font-style: italic; color: var(--accent); }
+
+.lock-note { font-size: 11px; color: var(--muted); line-height: 1.9; max-width: 300px; }
 
 .countdown {
-  font-family: monospace;
-  font-size: 13px;
-  color: #4338CA;
-  background: #F0F2FF;
-  border: 0.5px solid #C0B8F0;
-  border-radius: 12px;
-  padding: 10px 22px;
-  letter-spacing: 1px;
+  font-size: 12px;
+  color: var(--accent);
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 12px 28px;
+  letter-spacing: 2px;
 }
 
 .lock-back {
-  width: 100%;
-  padding: 10px;
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 12px;
   background: transparent;
   border: none;
-  border-top: 0.5px solid #E0E0F5;
-  color: #4338CA;
-  font-family: monospace;
-  font-size: 11px;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
   cursor: pointer;
-  letter-spacing: 2px;
+  letter-spacing: 3px;
   transition: color 0.2s;
-  margin-top: 0.5rem;
 }
-.lock-back:hover { color: #5B4CC3; }
+.lock-back:hover { color: var(--accent); }
 
 /* INSIDE */
 .inside {
   display: none;
-  background: #FAFBFE;
-  border-radius: 20px;
-  border: 0.5px solid #C0B8F0;
+  background: var(--bg);
+  border-radius: 24px;
+  border: 1px solid var(--border);
   overflow: hidden;
-  animation: fadeIn 0.6s ease;
+  animation: fadeUp 0.6s ease;
+  box-shadow: 0 4px 50px rgba(107,92,231,0.07);
 }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
 .inside.visible { display: block; }
 
 .inside-header {
-  background: #F0F2FF;
-  padding: 1.1rem 1.5rem;
+  background: var(--bg2);
+  padding: 1.1rem 1.6rem;
   display: flex;
   align-items: center;
-  gap: 8px;
-  border-bottom: 0.5px solid #E0E0F5;
+  gap: 7px;
+  border-bottom: 1px solid var(--border);
 }
 .dot { width: 10px; height: 10px; border-radius: 50%; }
-.dot.r { background: #FBBFBB; }
-.dot.y { background: #FDE68A; }
-.dot.g { background: #86EFAC; }
-.header-title { font-family: monospace; font-size: 11px; color: #4338CA; margin-left: auto; margin-right: auto; letter-spacing: 2px; }
+.dot.r { background: #f9b4b4; }
+.dot.y { background: #f9e4a0; }
+.dot.g { background: #a8e6b8; }
+.h-title { font-size: 10px; color: var(--accent); margin: 0 auto; letter-spacing: 3px; }
 
 .inside-body {
-  padding: 2.2rem 2rem;
+  padding: 2.8rem 2.4rem;
   display: flex;
   flex-direction: column;
-  gap: 1.4rem;
+  gap: 1.8rem;
 }
 
-.label { font-family: monospace; font-size: 11px; color: #5B4CC3; letter-spacing: 2px; }
+.label { font-size: 10px; color: var(--accent); letter-spacing: 3px; }
 
-.message {
-  font-size: 15px;
-  line-height: 1.9;
-  color: #4B5563;
+.msg {
+  font-family: 'DM Serif Display', serif;
+  font-size: 17px;
+  line-height: 1.95;
+  color: var(--soft);
 }
-.message .hl { color: #5B4CC3; font-weight: 500; }
+.msg strong { color: var(--ink); font-weight: 400; }
+.msg em { color: var(--accent); font-style: italic; }
 
-.divider { border: none; border-top: 0.5px dashed #E0E0F5; }
+.mono-note {
+  font-size: 11px;
+  line-height: 2.1;
+  color: var(--muted);
+  border-left: 2px solid var(--border);
+  padding-left: 1rem;
+}
+.mono-note span { color: var(--accent-light); }
+
+.divider { border: none; border-top: 1px dashed var(--border); }
 
 .closing {
-  font-size: 17px;
-  font-weight: 500;
-  color: #1E1E3A;
-  line-height: 1.7;
-  padding: 0.4rem 0;
+  font-family: 'DM Serif Display', serif;
+  font-size: 20px;
+  color: var(--ink);
+  line-height: 1.85;
 }
+.closing em { color: var(--accent); }
 
-.sign {
-  text-align: right;
-  font-style: italic;
-  color: #5B4CC3;
-  font-size: 13px;
-  font-family: monospace;
-}
+.sign { text-align: right; font-size: 11px; color: var(--muted); letter-spacing: 2px; }
+.sign span { color: var(--accent); }
 
 .back-btn {
   width: 100%;
-  padding: 10px;
+  padding: 13px;
   background: transparent;
   border: none;
-  border-top: 0.5px solid #E0E0F5;
-  color: #4338CA;
-  font-family: monospace;
-  font-size: 11px;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
   cursor: pointer;
-  letter-spacing: 2px;
+  letter-spacing: 3px;
   transition: color 0.2s;
 }
-.back-btn:hover { color: #5B4CC3; }
+.back-btn:hover { color: var(--accent); }
 </style>
 </head>
 <body>
 
-<div class="scene">
-  <div class="card-wrap">
+<div class="wrap">
 
-    <div class="cover" id="cover">
-      <div class="stars" id="stars"></div>
-      <div class="cover-for">// for my</div>
-      <div class="cover-name">Thatha</div>
-      <button class="cover-btn" id="openBtn">click me ♡</button>
-    </div>
-
-    <!-- LOCKED STATE -->
-    <div class="locked" id="locked">
-      <div class="lock-icon">🔒</div>
-      <div class="lock-title">// not yet, thatha</div>
-      <div class="lock-msg">
-        this card is sealed with my emotions<br/>
-        and will open on<br/>
-        <span>April 2nd ✦</span>
-      </div>
-      <div class="countdown" id="countdown">calculating...</div>
-      <button class="lock-back" id="lockBackBtn">↩ back</button>
-    </div>
-
-    <!-- INSIDE -->
-    <div class="inside" id="inside">
-      <div class="inside-header">
-        <div class="dot r"></div>
-        <div class="dot y"></div>
-        <div class="dot g"></div>
-        <div class="header-title">my thatha</div>
-      </div>
-
-      <div class="inside-body">
-        <div class="label">// dey thatha,</div>
-
-        <div class="message">
-          You have been my <span class="hl">emotional support</span> through everything —
-          the kind of person I never knew I needed until you were just always there.<br><br>
-          No matter what I was feeling, you made space for it.
-          You never made me feel like too much.
-          You just <span class="hl">stayed</span>.
-        </div>
-
-        <hr class="divider"/>
-
-        <div class="message">
-          People like you are rare, Sakthi.
-          The kind of rare that you don't find twice.<br><br>
-          <span class="hl">No one will ever fill the place you have.</span>
-          Not even close.
-        </div>
-
-        <hr class="divider"/>
-
-        <div class="closing">
-          And wherever life takes you —<br>
-          I will miss you, <span class="hl">Thatha.</span><br>
-          More than you know. 🫶
-        </div>
-
-        <div class="sign">// always, your kelavi ✦</div>
-      </div>
-
-      <button class="back-btn" id="backBtn">↩ close</button>
-    </div>
-
+  <!-- COVER -->
+  <div class="cover" id="cover">
+    <div class="blob blob1"></div>
+    <div class="blob blob2"></div>
+    <div class="blob blob3"></div>
+    <div id="stars"></div>
+    <div class="for-label">// for my</div>
+    <div class="cover-name">Thatha</div>
+    <div class="cover-sub">from your kelavi ✦</div>
+    <button class="cover-btn" id="openBtn">click me ♡</button>
   </div>
+
+  <!-- LOCKED -->
+  <div class="locked" id="locked">
+    <div class="lock-pulse">🔒</div>
+    <div class="lock-label">// not yet, thatha</div>
+    <div class="lock-msg">this one's sealed with my emotions<br/>until <em>April 2nd ✦</em></div>
+    <div class="lock-note">
+      waiting for<br/>
+      right time da thatha.
+    </div>
+    <div class="countdown" id="countdown">calculating...</div>
+    <button class="lock-back" id="lockBackBtn">↩ back</button>
+  </div>
+
+  <!-- INSIDE -->
+  <div class="inside" id="inside">
+
+    <div class="inside-header">
+      <div class="dot r"></div>
+      <div class="dot y"></div>
+      <div class="dot g"></div>
+      <div class="h-title">my thatha</div>
+    </div>
+
+    <div class="inside-body">
+
+      <div class="label">// dey thatha,</div>
+
+      <div class="msg">
+        I don't even know how we became friends🤷‍♀️.<br/>
+        Like genuinely — <em>no idea.</em><br/><br/>
+        We fought🥊🥊 more than we talked nicely, honestly.<br/>
+        But somewhere in all that chaos —<br/>
+        you became <strong>the one person who just got me.</strong>
+      </div>
+
+      <div class="mono-note">
+        <span>// I care about everyone normally.</span><br/>
+        but you figured out <em>why</em> I care.<br/>
+        why I get angry. why I go quiet.<br/>
+        <span>// you knew all of it.</span>
+      </div>
+
+      <hr class="divider"/>
+
+      <div class="msg">
+        There were times you'd do something completely unhinged<br/>
+        and stress me out — and I'd still come back.<br/>
+        No ego😒😒. Even when I made it a scene😅😅,<br/>
+        you'd be the one to come and talk first🥰🥰.<br/><br/>
+        <em>That's rare.</em><br/>
+        The kind of rare I didn't know I needed.
+      </div>
+
+      <hr class="divider"/>
+
+      <div class="msg">
+        When everything got hard during the internship —<br/>
+        without even being asked,<br/>
+        <strong>you were just there🤕.</strong><br/><br/>
+        My emotional support. My person.<br/>
+        I picked fights with my own friends for you —<br/>
+        that's how much you mattered to me.😊
+      </div>
+
+      <div class="mono-note">
+        <span>// I don't know why it feels so heavy now🥺🥺🥺.</span><br/>
+        I don't know if we'll meet again.<br/>
+        And even if we do —<br/>
+        I don't know if it'll ever be the same😕😕.<br/>
+        <span>// that's what hurts the most.</span>
+      </div>
+
+      <hr class="divider"/>
+
+      <div class="msg">
+        If someone new walks into your life😊 —<br/>
+        <em>I'll step back.</em> You know that about me.<br/>
+        Because I never want to be a burden to anyone.<br/><br/>
+        But Thatha —<br/>
+        <strong>I will miss you.</strong><br/>
+        So much more than you know.<br/>
+        Even the stupid fights. Even the chaos.
+      </div>
+
+      <hr class="divider"/>
+
+      <div class="closing">
+        But one thing, Thatha —<br/>
+        <em>don't forget your kelavi.</em><br/><br/>
+        She's annoying. She argues too much.<br/>
+        She cares a little too hard.<br/>
+        But she was always yours "kelavi". 🫶
+      </div>
+
+      <div class="sign">// miss you, eruma — <span>your kelavi ✦</span></div>
+
+    </div>
+
+    <button class="back-btn" id="backBtn">↩ close</button>
+  </div>
+
 </div>
 
 <script>
-// Stars
 const starsEl = document.getElementById('stars');
-for (let i = 0; i < 30; i++) {
+for (let i = 0; i < 28; i++) {
   const s = document.createElement('div');
   s.className = 'star';
   const size = Math.random() * 2.5 + 1;
-  s.style.cssText = `width:${size}px;height:${size}px;top:${Math.random()*100}%;left:${Math.random()*100}%;opacity:${Math.random()*0.4+0.1};animation-delay:${Math.random()*2}s;animation-duration:${Math.random()*2+1.5}s`;
+  s.style.cssText = `position:absolute;width:${size}px;height:${size}px;top:${Math.random()*100}%;left:${Math.random()*100}%;opacity:${Math.random()*0.3+0.1};animation-delay:${Math.random()*3}s;animation-duration:${Math.random()*2+2}s;`;
   starsEl.appendChild(s);
 }
 
-// Unlock date: April 2, 2026 00:00:00 IST (UTC+5:30)
-// IST = UTC + 5h30m
+// April 2 2026 IST = April 1 2026 18:30 UTC
 function getUnlockDate() {
-  // April 2 2026 00:00:00 IST = April 1 2026 18:30:00 UTC
   return new Date(Date.UTC(2026, 3, 1, 18, 30, 0));
 }
-
-function isUnlocked() {
-  return new Date() >= getUnlockDate();
-}
-
+function isUnlocked() { return new Date() >= getUnlockDate(); }
 function getTimeLeft() {
   const diff = getUnlockDate() - new Date();
   if (diff <= 0) return null;
-  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-  const secs = Math.floor((diff % (1000 * 60)) / 1000);
+  const days = Math.floor(diff / 864e5);
+  const hours = Math.floor((diff % 864e5) / 36e5);
+  const mins = Math.floor((diff % 36e5) / 6e4);
+  const secs = Math.floor((diff % 6e4) / 1000);
   return { days, hours, mins, secs };
 }
-
 function updateCountdown() {
   const t = getTimeLeft();
   const el = document.getElementById('countdown');
-  if (!t) {
-    el.textContent = '🔓 unlocked!';
-    return;
-  }
-  if (t.days > 0) {
-    el.textContent = `opens in ${t.days}d ${t.hours}h ${t.mins}m ${t.secs}s`;
-  } else if (t.hours > 0) {
-    el.textContent = `opens in ${t.hours}h ${t.mins}m ${t.secs}s`;
-  } else {
-    el.textContent = `opens in ${t.mins}m ${t.secs}s`;
-  }
+  if (!t) { el.textContent = '🔓 unlocked ✦'; return; }
+  if (t.days > 0) el.textContent = `opens in ${t.days}d ${t.hours}h ${t.mins}m ${t.secs}s`;
+  else if (t.hours > 0) el.textContent = `opens in ${t.hours}h ${t.mins}m ${t.secs}s`;
+  else el.textContent = `opens in ${t.mins}m ${t.secs}s`;
 }
-
 setInterval(updateCountdown, 1000);
 updateCountdown();
 
-// Open button
 document.getElementById('openBtn').addEventListener('click', function(e) {
   e.stopPropagation();
   if (isUnlocked()) {
@@ -334,22 +409,16 @@ document.getElementById('openBtn').addEventListener('click', function(e) {
   } else {
     document.getElementById('cover').style.display = 'none';
     document.getElementById('locked').classList.add('visible');
-    updateCountdown();
   }
 });
-
-// Back from locked
 document.getElementById('lockBackBtn').addEventListener('click', function() {
   document.getElementById('locked').classList.remove('visible');
   document.getElementById('cover').style.display = 'flex';
 });
-
-// Back from inside
 document.getElementById('backBtn').addEventListener('click', function() {
   document.getElementById('inside').classList.remove('visible');
   document.getElementById('cover').style.display = 'flex';
 });
 </script>
-
 </body>
 </html>
